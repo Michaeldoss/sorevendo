@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Só Revendo — Impressão, Personalização & Revenda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --blue:#1B5FB5;
+  --blue2:#2471D4;
+  --blue3:#4D8FE0;
+  --pink:#E91E8C;
+  --cyan:#00C2D4;
+  --yellow:#FFD600;
+  --ink:#070707;
+  --s1:#0D0D0D;
+  --s2:#141414;
+  --s3:#1C1C1C;
+  --s4:#272727;
+  --s5:#333;
+  --dim:#666;
+  --mid:#888;
+  --white:#F8F8F8;
+  --f-display:'Bebas Neue',sans-serif;
+  --f-head:'Barlow',sans-serif;
+  --f-body:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--white);font-family:var(--f-body);overflow-x:hidden;}
+
+/* ─────────────── NAV ─────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;
+  height:60px;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(16px,4vw,48px);
+  background:rgba(7,7,7,.92);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  transition:background .3s;
+}
+.nav.scrolled{background:rgba(7,7,7,.99);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;flex-shrink:0;}
+.logo-ring{
+  width:32px;height:32px;border-radius:50%;
+  background:conic-gradient(from 0deg,#E91E8C,#00C2D4,#FFD600,#4D8FE0,#E91E8C);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.logo-inner{
+  width:22px;height:22px;border-radius:50%;background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-diamond{width:8px;height:8px;background:var(--blue3);transform:rotate(45deg);}
+.logo-text{font-family:var(--f-head);font-size:1rem;font-weight:800;letter-spacing:.14em;color:var(--white);}
+.logo-text span{color:var(--blue3);font-weight:300;}
+
+.nav-links{display:flex;gap:4px;align-items:center;}
+.nav-link{
+  background:none;border:none;color:var(--dim);
+  font-family:var(--f-body);font-size:.8rem;font-weight:500;letter-spacing:.03em;
+  padding:.4rem .9rem;border-radius:20px;cursor:pointer;transition:all .2s;
+  text-decoration:none;display:inline-block;
+}
+.nav-link:hover{color:var(--white);background:rgba(255,255,255,.07);}
+.nav-link.active{color:var(--white);background:rgba(255,255,255,.08);}
+
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-icon{
+  background:none;border:none;color:var(--dim);
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;font-size:1.1rem;
+}
+.nav-icon:hover{color:var(--white);background:rgba(255,255,255,.07);}
+.nav-cta{
+  background:var(--blue);color:#fff;border:none;
+  font-family:var(--f-body);font-size:.78rem;font-weight:600;letter-spacing:.04em;
+  padding:.45rem 1.2rem;border-radius:20px;cursor:pointer;transition:background .2s;
+  white-space:nowrap;
+}
+.nav-cta:hover{background:var(--blue2);}
+
+/* Mobile menu */
+.nav-burger{display:none;background:none;border:none;color:var(--white);font-size:1.4rem;cursor:pointer;padding:.3rem;}
+.mobile-menu{
+  display:none;position:fixed;top:60px;left:0;right:0;
+  background:rgba(7,7,7,.98);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  z-index:999;padding:12px 20px 20px;
+  flex-direction:column;gap:4px;
+}
+.mobile-menu.open{display:flex;}
+.mob-link{
+  background:none;border:none;color:var(--mid);
+  font-family:var(--f-body);font-size:.9rem;font-weight:500;
+  padding:.75rem 1rem;border-radius:10px;cursor:pointer;
+  text-align:left;transition:all .2s;
+}
+.mob-link:hover{color:var(--white);background:rgba(255,255,255,.06);}
+.mob-cta{
+  background:var(--blue);color:#fff;border:none;
+  font-family:var(--f-body);font-size:.85rem;font-weight:600;
+  padding:.7rem 1rem;border-radius:14px;cursor:pointer;margin-top:8px;
+  text-align:center;
+}
+
+/* ─────────────── TICKER ─────────────── */
+.ticker{
+  background:var(--blue);padding:9px 0;overflow:hidden;
+  position:relative;
+}
+.ticker-inner{display:flex;white-space:nowrap;animation:ticker-anim 22s linear infinite;}
+.ticker-item{
+  font-family:var(--f-head);font-size:.75rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  padding:0 2.5rem;color:rgba(255,255,255,.85);
+}
+@keyframes ticker-anim{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─────────────── PAGES ─────────────── */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ═══════════════════════════════════
+   HOME
+═══════════════════════════════════ */
+/* HERO */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;padding-top:60px;
+}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(7,7,7,.1) 0%,rgba(7,7,7,.55) 60%,var(--ink) 100%);
+}
+.hero-content{
+  position:relative;z-index:3;
+  text-align:center;
+  padding:0 clamp(20px,6vw,80px);
+  display:flex;flex-direction:column;align-items:center;gap:clamp(14px,2.5vw,22px);
+  max-width:900px;
+}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid rgba(77,143,224,.25);
+  background:rgba(27,95,181,.08);
+  color:var(--blue3);font-size:clamp(.6rem,.9vw,.75rem);font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:.32rem 1rem;border-radius:30px;
+}
+.hero-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--blue3);}
+.hero-h1{
+  font-family:var(--f-display);
+  font-size:clamp(4.5rem,10vw,10rem);
+  line-height:.88;
+  letter-spacing:.01em;
+  color:var(--white);
+  text-shadow:0 0 120px rgba(27,95,181,.2);
+}
+.hero-h1 .c-blue{color:var(--blue3);}
+.hero-h1 .c-pink{color:var(--pink);font-family:var(--f-head);font-weight:200;font-style:italic;font-size:clamp(3rem,7vw,7rem);}
+.hero-sub{
+  font-size:clamp(.85rem,1.5vw,1.05rem);
+  color:rgba(255,255,255,.42);
+  max-width:480px;line-height:1.65;font-weight:300;
+}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.btn-white{
+  background:var(--white);color:var(--ink);
+  border:none;font-family:var(--f-body);
+  font-size:clamp(.78rem,1.2vw,.88rem);font-weight:700;letter-spacing:.05em;
+  padding:clamp(.6rem,.8vw,.75rem) clamp(1.4rem,2.5vw,2rem);
+  border-radius:40px;cursor:pointer;transition:transform .2s,box-shadow .2s;
+}
+.btn-white:hover{transform:scale(1.04);box-shadow:0 8px 30px rgba(0,0,0,.4);}
+.btn-outline{
+  background:transparent;color:var(--white);
+  border:1px solid rgba(255,255,255,.2);
+  font-family:var(--f-body);font-size:clamp(.78rem,1.2vw,.88rem);
+  font-weight:500;letter-spacing:.04em;
+  padding:clamp(.6rem,.8vw,.75rem) clamp(1.2rem,2vw,1.8rem);
+  border-radius:40px;cursor:pointer;transition:border-color .2s;
+}
+.btn-outline:hover{border-color:rgba(255,255,255,.45);}
+.scroll-cue{
+  position:absolute;bottom:clamp(24px,4vh,40px);left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.3;
+}
+.scroll-cue span{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--white),transparent);}
+
+/* STATS */
+.stats-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--s1);border-top:1px solid var(--s3);border-bottom:1px solid var(--s3);
+}
+.stat{padding:clamp(16px,3vw,28px) clamp(12px,2vw,20px);text-align:center;border-right:1px solid var(--s3);}
+.stat:last-child{border-right:none;}
+.stat-num{font-family:var(--f-display);font-size:clamp(2rem,4vw,3.2rem);color:var(--white);line-height:1;}
+.stat-label{font-size:clamp(.55rem,.8vw,.7rem);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:4px;}
+
+/* BENTO */
+.bento-section{padding:clamp(40px,6vw,80px) clamp(16px,4vw,48px);}
+.section-eyebrow{font-size:clamp(.6rem,.8vw,.72rem);font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue3);margin-bottom:10px;}
+.section-title{font-family:var(--f-display);font-size:clamp(2rem,4.5vw,4rem);color:var(--white);margin-bottom:clamp(20px,3vw,36px);line-height:.95;}
+.bento-grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  grid-template-rows:auto auto;
+  gap:3px;
+}
+.bcard{background:var(--s2);overflow:hidden;cursor:pointer;position:relative;transition:background .25s;}
+.bcard:hover{background:var(--s3);}
+.bcard:first-child{grid-row:span 2;border-radius:14px 0 0 14px;}
+.bcard:nth-child(2){border-radius:0 14px 0 0;}
+.bcard:nth-child(3){border-radius:0 0 14px 0;}
+.bcard-img{width:100%;display:block;transition:opacity .3s,transform .4s;opacity:.72;}
+.bcard:first-child .bcard-img{height:clamp(300px,40vh,500px);object-fit:cover;}
+.bcard:not(:first-child) .bcard-img{height:clamp(140px,18vh,220px);object-fit:cover;}
+.bcard:hover .bcard-img{opacity:.9;transform:scale(1.02);}
+.bcard-label{position:absolute;bottom:0;left:0;right:0;padding:clamp(12px,2vw,20px);background:linear-gradient(to top,rgba(7,7,7,.95) 0%,transparent 100%);}
+.bcard-tag{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--blue3);margin-bottom:5px;display:block;}
+.bcard-name{font-family:var(--f-head);font-size:clamp(.9rem,1.6vw,1.2rem);font-weight:700;color:var(--white);line-height:1.1;}
+.bcard-arrow{position:absolute;top:14px;right:14px;color:var(--blue3);font-size:1rem;opacity:.4;transition:all .25s;}
+.bcard:hover .bcard-arrow{opacity:1;transform:translateX(3px);}
+/* Fallback se img não carregar */
+.bcard-fallback{
+  height:clamp(300px,40vh,500px);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-display);font-size:2rem;letter-spacing:.1em;color:rgba(255,255,255,.2);
+}
+.bcard:not(:first-child) .bcard-fallback{height:clamp(140px,18vh,220px);}
+
+/* MANIFESTO */
+.manifesto{
+  padding:clamp(48px,7vw,96px) clamp(16px,4vw,48px);
+  background:var(--s1);
+  border-top:1px solid var(--s3);
+  border-bottom:1px solid var(--s3);
+}
+.manifesto-inner{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center;max-width:1200px;}
+.manifesto-big{
+  font-family:var(--f-display);
+  font-size:clamp(2.5rem,5vw,5rem);
+  line-height:.9;
+  color:var(--white);
+}
+.manifesto-big .accent{color:var(--blue3);}
+.manifesto-text{font-size:clamp(.82rem,1.2vw,.95rem);color:rgba(255,255,255,.4);line-height:1.75;font-weight:300;}
+.manifesto-text strong{color:var(--white);font-weight:500;}
+
+/* ═══════════════════════════════════
+   PRODUTOS
+═══════════════════════════════════ */
+.prod-hero{
+  position:relative;
+  min-height:clamp(380px,55vh,560px);
+  display:flex;align-items:flex-end;
+  overflow:hidden;padding-top:60px;
+}
+#prod-canvas{position:absolute;inset:0;width:100%;height:100%;}
+.prod-hero-grad{position:absolute;inset:0;background:linear-gradient(100deg,rgba(7,7,7,.97) 30%,rgba(7,7,7,.4) 100%);}
+.prod-hero-content{
+  position:relative;z-index:3;
+  padding:0 clamp(20px,5vw,64px) clamp(32px,5vh,56px);
+  display:flex;flex-direction:column;gap:clamp(10px,1.5vw,16px);
+}
+.prod-eyebrow{font-size:clamp(.6rem,.8vw,.72rem);font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue3);}
+.prod-h{
+  font-family:var(--f-display);
+  font-size:clamp(3rem,7vw,7rem);
+  color:var(--white);line-height:.88;letter-spacing:.01em;
+}
+.prod-sub{font-size:clamp(.78rem,1.1vw,.9rem);color:rgba(255,255,255,.38);font-weight:300;max-width:320px;line-height:1.6;}
+.prod-filters{display:flex;gap:6px;flex-wrap:wrap;}
+.pf-btn{
+  background:var(--s3);border:1px solid var(--s4);color:var(--dim);
+  font-family:var(--f-body);font-size:clamp(.65rem,.85vw,.78rem);font-weight:600;letter-spacing:.06em;
+  padding:.35rem clamp(.7rem,1.2vw,1rem);border-radius:20px;cursor:pointer;transition:all .2s;
+}
+.pf-btn:hover,.pf-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+
+/* PRODUCT FEATURE ROWS */
+.prod-features{background:var(--ink);}
+.pf-row{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:clamp(240px,35vw,400px);
+  border-bottom:1px solid var(--s3);
+  cursor:pointer;transition:background .2s;
+  overflow:hidden;
+}
+.pf-row:hover{background:var(--s1);}
+.pf-row.reverse{direction:rtl;}
+.pf-row.reverse>*{direction:ltr;}
+.pf-visual{position:relative;overflow:hidden;min-height:clamp(240px,35vw,400px);}
+.pf-visual img{
+  width:100%;height:100%;object-fit:cover;
+  opacity:.78;transition:opacity .35s,transform .5s;display:block;
+}
+.pf-row:hover .pf-visual img{opacity:.95;transform:scale(1.03);}
+.pf-visual-overlay{position:absolute;inset:0;background:rgba(7,7,7,.08);}
+.pf-num{
+  position:absolute;bottom:12px;right:16px;
+  font-family:var(--f-display);font-size:clamp(3rem,6vw,5rem);
+  color:rgba(255,255,255,.05);letter-spacing:-.05em;line-height:1;
+}
+.pf-info{
+  padding:clamp(24px,4vw,48px) clamp(20px,3.5vw,44px);
+  display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,1.2vw,14px);
+}
+.pf-cat{font-size:clamp(.58rem,.75vw,.7rem);font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue3);}
+.pf-name{
+  font-family:var(--f-display);
+  font-size:clamp(1.6rem,3.2vw,2.8rem);
+  color:var(--white);letter-spacing:.01em;line-height:.92;
+}
+.pf-desc{font-size:clamp(.72rem,1.1vw,.85rem);color:rgba(255,255,255,.38);line-height:1.65;font-weight:300;}
+.pf-specs{display:flex;gap:6px;flex-wrap:wrap;}
+.pf-spec{
+  background:var(--s3);color:var(--dim);
+  font-size:clamp(.58rem,.75vw,.68rem);font-weight:600;letter-spacing:.06em;
+  padding:.22rem .6rem;border-radius:8px;
+}
+.pf-cta{
+  background:transparent;border:1px solid rgba(77,143,224,.35);color:var(--blue3);
+  font-family:var(--f-body);font-size:clamp(.65rem,.85vw,.78rem);font-weight:600;letter-spacing:.06em;
+  padding:.42rem clamp(.8rem,1.5vw,1.2rem);border-radius:20px;cursor:pointer;transition:all .2s;
+  width:fit-content;
+}
+.pf-cta:hover{background:var(--blue);border-color:var(--blue);color:#fff;}
+
+/* PRODUCT GRID */
+.prod-grid-section{padding:clamp(32px,5vw,64px) clamp(16px,4vw,48px);}
+.prod-grid-title{font-family:var(--f-display);font-size:clamp(1.5rem,2.8vw,2.5rem);color:var(--white);margin-bottom:clamp(16px,2.5vw,28px);}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr));gap:3px;}
+.pg-card{background:var(--s2);overflow:hidden;cursor:pointer;transition:background .2s;border-radius:0;}
+.pg-card:first-child{border-radius:10px 0 0 10px;}
+.pg-card:last-child{border-radius:0 10px 10px 0;}
+.pg-card:hover{background:var(--s3);}
+.pgc-img{height:clamp(90px,12vw,140px);overflow:hidden;position:relative;}
+.pgc-img img{width:100%;height:100%;object-fit:cover;opacity:.7;transition:opacity .3s;}
+.pg-card:hover .pgc-img img{opacity:.9;}
+.pgc-body{padding:clamp(10px,1.5vw,14px) clamp(12px,1.8vw,16px);}
+.pgc-name{font-family:var(--f-head);font-size:clamp(.8rem,1.2vw,.95rem);font-weight:700;color:var(--white);margin-bottom:4px;}
+.pgc-desc{font-size:clamp(.62rem,.85vw,.75rem);color:var(--dim);line-height:1.45;}
+.pgc-foot{padding:clamp(7px,1vw,10px) clamp(12px,1.8vw,16px);border-top:1px solid var(--s3);display:flex;align-items:center;justify-content:space-between;}
+.badge{font-size:clamp(.52rem,.7vw,.62rem);font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.18rem .5rem;border-radius:6px;}
+.badge-pop{background:rgba(233,30,140,.1);color:var(--pink);border:1px solid rgba(233,30,140,.18);}
+.badge-new{background:rgba(27,95,181,.12);color:var(--blue3);border:1px solid rgba(77,143,224,.22);}
+.pgc-btn{background:none;border:none;color:var(--blue3);font-size:clamp(.6rem,.8vw,.72rem);font-weight:600;letter-spacing:.06em;cursor:pointer;font-family:var(--f-body);}
+
+/* ─────────────── FOOTER ─────────────── */
+.footer{
+  background:var(--s1);border-top:1px solid var(--s3);
+  padding:clamp(32px,5vw,56px) clamp(16px,4vw,48px);
+}
+.footer-inner{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:clamp(24px,4vw,48px);max-width:1200px;}
+.footer-brand .logo-text{font-size:1.1rem;margin-bottom:12px;display:block;}
+.footer-brand p{font-size:.78rem;color:var(--dim);line-height:1.7;max-width:280px;}
+.footer-col h4{font-family:var(--f-head);font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);margin-bottom:12px;}
+.footer-col a{display:block;font-size:.78rem;color:var(--dim);text-decoration:none;padding:.25rem 0;transition:color .2s;}
+.footer-col a:hover{color:var(--white);}
+.footer-bottom{margin-top:clamp(24px,4vw,40px);padding-top:16px;border-top:1px solid var(--s3);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.footer-copy{font-size:.7rem;color:var(--mid);}
+.footer-cnpj{font-size:.7rem;color:var(--dim);}
+
+/* ─────────────── WA FLOAT ─────────────── */
+.wa-float{
+  position:fixed;bottom:clamp(16px,3vw,28px);right:clamp(16px,3vw,28px);
+  z-index:900;width:52px;height:52px;border-radius:50%;
+  background:#25D366;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;
+  box-shadow:0 6px 24px rgba(37,211,102,.35);
+  transition:transform .2s,box-shadow .2s;
+}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 8px 32px rgba(37,211,102,.45);}
+
+/* ═════════════════════════════════════
+   RESPONSIVE
+═════════════════════════════════════ */
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .nav-icon:not(.nav-icon-search){display:none;}
+  .nav-burger{display:block;}
+
+  .bento-grid{grid-template-columns:1fr;}
+  .bcard:first-child{border-radius:14px 14px 0 0;grid-row:span 1;}
+  .bcard:nth-child(2){border-radius:0;}
+  .bcard:nth-child(3){border-radius:0 0 14px 14px;}
+  .bcard:first-child .bcard-img{height:clamp(220px,45vw,380px);}
+  .bcard:not(:first-child) .bcard-img{height:clamp(160px,28vw,240px);}
+
+  .manifesto-inner{grid-template-columns:1fr;}
+  .manifesto-big{font-size:clamp(2.5rem,8vw,4rem);}
+
+  .pf-row{grid-template-columns:1fr;min-height:auto;}
+  .pf-row.reverse{direction:ltr;}
+  .pf-visual{min-height:clamp(200px,40vw,320px);}
+  .pf-visual img{height:clamp(200px,40vw,320px);}
+
+  .stats-strip{grid-template-columns:repeat(2,1fr);}
+  .stat:nth-child(2){border-right:none;}
+  .stat:nth-child(3){border-top:1px solid var(--s3);}
+  .stat:nth-child(4){border-top:1px solid var(--s3);border-right:none;}
+
+  .footer-inner{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;}
+}
+
+@media(max-width:600px){
+  .hero-h1{font-size:clamp(3.5rem,13vw,5.5rem);}
+  .prod-grid{grid-template-columns:repeat(2,1fr);}
+  .pg-card:first-child,.pg-card:last-child{border-radius:0;}
+  .prod-hero-grad{background:rgba(7,7,7,.82);}
+  .nav-cta{display:none;}
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.anim-1{animation:fadeUp .7s ease both;}
+.anim-2{animation:fadeUp .7s .12s ease both;}
+.anim-3{animation:fadeUp .7s .22s ease both;}
+.anim-4{animation:fadeUp .7s .32s ease both;}
+.anim-5{animation:fadeUp .7s .42s ease both;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="logo" onclick="showPage('home')">
+    <div class="logo-ring"><div class="logo-inner"><div class="logo-diamond"></div></div></div>
+    <span class="logo-text">SÓ<span>REVENDO</span></span>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-link active" id="nl-home" onclick="showPage('home')">Home</button>
+    <button class="nav-link" id="nl-prod" onclick="showPage('produtos')">Produtos</button>
+    <button class="nav-link" onclick="scrollToSection('sobre')">Sobre</button>
+    <button class="nav-link" onclick="scrollToSection('contato')">Contato</button>
+  </div>
+  <div class="nav-right">
+    <button class="nav-icon nav-icon-search" aria-label="Buscar">🔍</button>
+    <button class="nav-icon" aria-label="Carrinho">🛍️</button>
+    <button class="nav-cta" onclick="window.open('https://wa.me/5547999999999','_blank')">Fazer Pedido</button>
+    <button class="nav-burger" id="burger" onclick="toggleMenu()" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mob-link" onclick="showPage('home');toggleMenu()">Home</button>
+  <button class="mob-link" onclick="showPage('produtos');toggleMenu()">Produtos</button>
+  <button class="mob-link" onclick="toggleMenu()">Sobre</button>
+  <button class="mob-link" onclick="toggleMenu()">Contato</button>
+  <button class="mob-cta" onclick="window.open('https://wa.me/5547999999999','_blank')">Fazer Pedido via WhatsApp</button>
+</div>
+
+<!-- TICKER -->
+<div class="ticker" style="position:fixed;top:60px;left:0;right:0;z-index:998;">
+  <div class="ticker-inner" id="ticker"></div>
+</div>
+
+<!-- ══════════════ HOME PAGE ══════════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero" style="padding-top:88px;">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-pill anim-1"><span class="hero-pill-dot"></span>Impressão · UV · Sublimação · Revenda · Joinville SC</div>
+      <h1 class="hero-h1 anim-2">
+        TRANSFORMA<br>
+        <span class="c-blue">IDEIAS</span> EM<br>
+        <span class="c-pink">produtos reais</span>
+      </h1>
+      <p class="hero-sub anim-3">Impressão UV, sublimática, comunicação visual e brindes personalizados. Do pedido único à produção em escala. Desde 2013.</p>
+      <div class="hero-btns anim-4">
+        <button class="btn-white" onclick="showPage('produtos')">Ver Produtos →</button>
+        <button class="btn-outline" onclick="window.open('https://wa.me/5547999999999','_blank')">Solicitar Orçamento</button>
+      </div>
+    </div>
+    <div class="scroll-cue">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <div class="stats-strip">
+    <div class="stat"><div class="stat-num" data-target="17" data-id="sn0">0</div><div class="stat-label">Categorias</div></div>
+    <div class="stat"><div class="stat-num" data-target="500" data-id="sn1">0+</div><div class="stat-label">Clientes</div></div>
+    <div class="stat"><div class="stat-num" data-target="13" data-id="sn2">0</div><div class="stat-label">Anos de Mercado</div></div>
+    <div class="stat"><div class="stat-num" data-target="200" data-id="sn3">0+</div><div class="stat-label">Pedidos/Mês</div></div>
+  </div>
+
+  <section class="bento-section">
+    <div class="section-eyebrow">Nosso Catálogo</div>
+    <h2 class="section-title">17 FORMAS<br>DE IMPRIMIR.</h2>
+    <div class="bento-grid">
+      <div class="bcard" onclick="showPage('produtos')">
+        <img class="bcard-img" src="https://i.ibb.co/placeholder/windbanner.jpg"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          alt="Wind Banner">
+        <div class="bcard-fallback" style="display:none;background:linear-gradient(135deg,#0D0D0D 0%,#1B5FB5 100%);">
+          🏴 WIND BANNER
+        </div>
+        <div class="bcard-label">
+          <span class="bcard-tag">Mais Vendido</span>
+          <div class="bcard-name">Wind Banner & Bandeiras Promocionais</div>
+        </div>
+        <span class="bcard-arrow">→</span>
+      </div>
+      <div class="bcard" onclick="showPage('produtos')">
+        <img class="bcard-img" src="https://i.ibb.co/placeholder/sublimacao.jpg"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          alt="Sublimação Têxtil">
+        <div class="bcard-fallback" style="display:none;background:linear-gradient(135deg,#0D0D0D 0%,#E91E8C 100%);">
+          🎨 SUBLIMAÇÃO
+        </div>
+        <div class="bcard-label">
+          <span class="bcard-tag">Têxtil & Brindes</span>
+          <div class="bcard-name">Sublimação & DTF Têxtil</div>
+        </div>
+        <span class="bcard-arrow">→</span>
+      </div>
+      <div class="bcard" onclick="showPage('produtos')">
+        <img class="bcard-img" src="https://i.ibb.co/placeholder/patch3d.jpg"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          alt="Patch UV 3D">
+        <div class="bcard-fallback" style="display:none;background:linear-gradient(135deg,#0D0D0D 0%,#00C2D4 100%);">
+          🌟 PATCH UV 3D
+        </div>
+        <div class="bcard-label">
+          <span class="bcard-tag">Tendência</span>
+          <div class="bcard-name">Patch UV 3D & DTF UV</div>
+        </div>
+        <span class="bcard-arrow">→</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="manifesto">
+    <div class="manifesto-inner">
+      <div class="manifesto-big">SUA MARCA<br>NOSSO<br><span class="accent">PROCESSO.</span></div>
+      <div>
+        <p class="manifesto-text">A <strong>Só Revendo</strong> é para quem quer <strong>vender mais sem investir em máquinas</strong>. Terceirize sua produção com qualidade profissional, prazos reais e preço competitivo.<br><br>Do pequeno empreendedor ao lojista em escala — atendemos todos os tamanhos de pedido com o mesmo cuidado e acabamento premium.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /HOME -->
+
+<!-- ══════════════ PRODUTOS PAGE ══════════════ -->
+<div class="page" id="page-produtos">
+
+  <div class="prod-hero" style="padding-top:88px;">
+    <canvas id="prod-canvas"></canvas>
+    <div class="prod-hero-grad"></div>
+    <div class="prod-hero-content">
+      <div class="prod-eyebrow">Catálogo Completo · 17 Categorias · Joinville SC</div>
+      <h1 class="prod-h">IMPRESSÃO<br>SEM LIMITES.</h1>
+      <p class="prod-sub">Qualidade profissional em qualquer escala de pedido.</p>
+      <div class="prod-filters">
+        <button class="pf-btn active" onclick="filterProd('todos',this)">Todos</button>
+        <button class="pf-btn" onclick="filterProd('visual',this)">Comunicação Visual</button>
+        <button class="pf-btn" onclick="filterProd('textil',this)">Têxtil</button>
+        <button class="pf-btn" onclick="filterProd('brindes',this)">Brindes UV</button>
+        <button class="pf-btn" onclick="filterProd('adesivos',this)">Adesivos</button>
+        <button class="pf-btn" onclick="filterProd('inflaveis',this)">Infláveis</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="prod-features">
+
+    <div class="pf-row" data-cat="visual">
+      <div class="pf-visual">
+        <img src="https://i.ibb.co/placeholder/windbanner2.jpg"
+          onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#0D0D0D,#1B5FB5)'"
+          alt="Wind Banner">
+        <div class="pf-visual-overlay"></div>
+        <span class="pf-num">01</span>
+      </div>
+      <div class="pf-info">
+        <span class="pf-cat">Comunicação Visual</span>
+        <h2 class="pf-name">WIND BANNER & BANDEIRAS</h2>
+        <p class="pf-desc">Alta durabilidade com impressão sublimática vibrante. Gota, retangular, pluma — com ou sem base. Ideal para PDV, eventos e feiras.</p>
+        <div class="pf-specs">
+          <span class="pf-spec">P / M / G / GG</span>
+          <span class="pf-spec">Com base</span>
+          <span class="pf-spec">Outdoor</span>
+          <span class="pf-spec">Sublimação</span>
+        </div>
+        <button class="pf-cta" onclick="window.open('https://wa.me/5547999999999','_blank')">Solicitar Orçamento →</button>
+      </div>
+    </div>
+
+    <div class="pf-row reverse" data-cat="textil">
+      <div class="pf-visual">
+        <img src="https://i.ibb.co/placeholder/sublimacao2.jpg"
+          onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#0D0D0D,#E91E8C)'"
+          alt="Sublimação Têxtil">
+        <div class="pf-visual-overlay"></div>
+        <span class="pf-num">02</span>
+      </div>
+      <div class="pf-info">
+        <span class="pf-cat">Impressão Sublimática</span>
+        <h2 class="pf-name">SUBLIMAÇÃO TÊXTIL</h2>
+        <p class="pf-desc">Produza sem máquinas. Tecidos, uniformes, camisetas e decoração com cores permanentes que não desbotam. Sem mínimo de peças.</p>
+        <div class="pf-specs">
+          <span class="pf-spec">Sem mínimo</span>
+          <span class="pf-spec">Terceirizado</span>
+          <span class="pf-spec">Entrega rápida</span>
+          <span class="pf-spec">Moda</span>
+        </div>
+        <button class="pf-cta" onclick="window.open('https://wa.me/5547999999999','_blank')">Solicitar Orçamento →</button>
+      </div>
+    </div>
+
+    <div class="pf-row" data-cat="textil">
+      <div class="pf-visual">
+        <img src="https://i.ibb.co/placeholder/patch3d2.jpg"
+          onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#0D0D0D,#00C2D4)'"
+          alt="Patch UV 3D">
+        <div class="pf-visual-overlay"></div>
+        <span class="pf-num">03</span>
+      </div>
+      <div class="pf-info">
+        <span class="pf-cat">Impressão UV Premium</span>
+        <h2 class="pf-name">PATCH UV 3D & DTF UV</h2>
+        <p class="pf-desc">Alto relevo com acabamento premium. A tendência do mercado para bonés, roupas e marca própria. Diferenciação real no produto final.</p>
+        <div class="pf-specs">
+          <span class="pf-spec">Alto Relevo</span>
+          <span class="pf-spec">Premium</span>
+          <span class="pf-spec">Bonés</span>
+          <span class="pf-spec">Moda</span>
+        </div>
+        <button class="pf-cta" onclick="window.open('https://wa.me/5547999999999','_blank')">Solicitar Orçamento →</button>
+      </div>
+    </div>
+
+    <div class="pf-row reverse" data-cat="visual">
+      <div class="pf-visual">
+        <img src="https://i.ibb.co/placeholder/lona2.jpg"
+          onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#0D0D0D,#FFD600)'"
+          alt="Lona Fachada">
+        <div class="pf-visual-overlay"></div>
+        <span class="pf-num">04</span>
+      </div>
+      <div class="pf-info">
+        <span class="pf-cat">Comunicação Visual</span>
+        <h2 class="pf-name">LONAS & FACHADAS</h2>
+        <p class="pf-desc">Impressão UV de alta resolução (1,80m de largura). Lona com ilhós, acabamento profissional para fachadas, eventos e lojas.</p>
+        <div class="pf-specs">
+          <span class="pf-spec">1,80m largura</span>
+          <span class="pf-spec">Alta resolução</span>
+          <span class="pf-spec">Com ilhós</span>
+          <span class="pf-spec">Fachadas</span>
+        </div>
+        <button class="pf-cta" onclick="window.open('https://wa.me/5547999999999','_blank')">Solicitar Orçamento →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="prod-grid-section">
+    <h3 class="prod-grid-title">MAIS PRODUTOS</h3>
+    <div class="prod-grid">
+      <div class="pg-card" data-cat="adesivos">
+        <div class="pgc-img">
+          <img src="https://i.ibb.co/placeholder/adesivo.jpg"
+            onerror="this.style.background='#1B5FB5';this.style.display='block';this.src=''"
+            alt="Adesivo Recortado">
+        </div>
+        <div class="pgc-body">
+          <div class="pgc-name">Adesivo Recortado</div>
+          <div class="pgc-desc">Contorno preciso para logos, veículos e embalagens.</div>
+        </div>
+        <div class="pgc-foot">
+          <span class="badge badge-pop">Popular</span>
+          <button class="pgc-btn" onclick="window.open('https://wa.me/5547999999999','_blank')">ORÇAR →</button>
+        </div>
+      </div>
+      <div class="pg-card" data-cat="adesivos">
+        <div class="pgc-img">
+          <img src="https://i.ibb.co/placeholder/resina.jpg"
+            onerror="this.style.background='#00C2D4';this.style.display='block';this.src=''"
+            alt="Adesivo Resina">
+        </div>
+        <div class="pgc-body">
+          <div class="pgc-name">Adesivo Resina 3D</div>
+          <div class="pgc-desc">Alto brilho, efeito 3D. Etiquetas premium.</div>
+        </div>
+        <div class="pgc-foot">
+          <span class="badge badge-new">Novo</span>
+          <button class="pgc-btn" onclick="window.open('https://wa.me/5547999999999','_blank')">ORÇAR →</button>
+        </div>
+      </div>
+      <div class="pg-card" data-cat="brindes">
+        <div class="pgc-img">
+          <img src="https://i.ibb.co/placeholder/caneca.jpg"
+            onerror="this.style.background='#E91E8C';this.style.display='block';this.src=''"
+            alt="Brindes UV">
+        </div>
+        <div class="pgc-body">
+          <div class="pgc-name">Brindes UV</div>
+          <div class="pgc-desc">Canecas, copos, acrílico, MDF e muito mais.</div>
+        </div>
+        <div class="pgc-foot">
+          <span class="badge badge-new">Novo</span>
+          <button class="pgc-btn" onclick="window.open('https://wa.me/5547999999999','_blank')">ORÇAR →</button>
+        </div>
+      </div>
+      <div class="pg-card" data-cat="inflaveis">
+        <div class="pgc-img">
+          <img src="https://i.ibb.co/placeholder/inflavel.jpg"
+            onerror="this.style.background='#FFD600';this.style.display='block';this.src=''"
+            alt="Infláveis">
+        </div>
+        <div class="pgc-body">
+          <div class="pgc-name">Boneco & Inflável</div>
+          <div class="pgc-desc">Bonecos malucos e tendas infláveis para eventos.</div>
+        </div>
+        <div class="pgc-foot">
+          <span class="badge badge-pop">Impacto</span>
+          <button class="pgc-btn" onclick="window.open('https://wa.me/5547999999999','_blank')">ORÇAR →</button>
+        </div>
+      </div>
+      <div class="pg-card" data-cat="visual">
+        <div class="pgc-img">
+          <img src="https://i.ibb.co/placeholder/canvas.jpg"
+            onerror="this.style.background='#4D8FE0';this.style.display='block';this.src=''"
+            alt="Canvas Impressão">
+        </div>
+        <div class="pgc-body">
+          <div class="pgc-name">Canvas & Quadros</div>
+          <div class="pgc-desc">Impressão em tela canvas para decoração.</div>
+        </div>
+        <div class="pgc-foot">
+          <span class="badge badge-pop">Popular</span>
+          <button class="pgc-btn" onclick="window.open('https://wa.me/5547999999999','_blank')">ORÇAR →</button>
+        </div>
+      </div>
+      <div class="pg-card" data-cat="brindes">
+        <div class="pgc-img">
+          <img src="https://i.ibb.co/placeholder/placas.jpg"
+            onerror="this.style.background='#272727';this.style.display='block';this.src=''"
+            alt="Placas UV">
+        </div>
+        <div class="pgc-body">
+          <div class="pgc-name">Placas & Displays UV</div>
+          <div class="pgc-desc">Acrílico, PVC e displays com impressão UV.</div>
+        </div>
+        <div class="pgc-foot">
+          <span class="badge badge-new">Novo</span>
+          <button class="pgc-btn" onclick="window.open('https://wa.me/5547999999999','_blank')">ORÇAR →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /PRODUTOS -->
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div class="logo-ring" style="width:28px;height:28px;"><div class="logo-inner" style="width:18px;height:18px;"><div class="logo-diamond" style="width:6px;height:6px;"></div></div></div>
+        <span class="logo-text" style="font-size:.9rem;">SÓ<span>REVENDO</span></span>
+      </div>
+      <p>Impressão, personalização e oportunidades para quem quer vender mais e se destacar no mercado.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Produtos</h4>
+      <a href="#" onclick="showPage('produtos')">Wind Banner</a>
+      <a href="#" onclick="showPage('produtos')">Sublimação Têxtil</a>
+      <a href="#" onclick="showPage('produtos')">Patch UV 3D</a>
+      <a href="#" onclick="showPage('produtos')">Lonas & Fachadas</a>
+      <a href="#" onclick="showPage('produtos')">Adesivos</a>
+      <a href="#" onclick="showPage('produtos')">Brindes UV</a>
+    </div>
+    <div class="footer-col">
+      <h4>Empresa</h4>
+      <a href="#">Sobre a Só Revendo</a>
+      <a href="#">Contato</a>
+      <a href="https://wa.me/5547999999999" target="_blank">WhatsApp</a>
+      <br>
+      <h4 style="margin-top:12px;">Endereço</h4>
+      <a href="#">Av. Santos Dumont, 6470</a>
+      <a href="#">Aventureiro, Joinville SC</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Só Revendo · Todos os direitos reservados</span>
+    <span class="footer-cnpj">CNPJ 18.264.058/0001-08</span>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<button class="wa-float" onclick="window.open('https://wa.me/5547999999999','_blank')" aria-label="Falar no WhatsApp">💬</button>
+
+<script>
+/* ── TICKER ── */
+(function(){
+  const items=['WIND BANNER','DTF TÊXTIL','SUBLIMAÇÃO','PATCH UV 3D','LONAS','ADESIVOS','BRINDES UV','INFLÁVEIS','IMPRESSÃO UV','COMUNICAÇÃO VISUAL'];
+  const el=document.getElementById('ticker');
+  const h=items.map(t=>`<span class="ticker-item">${t} ·</span>`).join('');
+  el.innerHTML=h+h+h;
+})();
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll',function(){
+  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>20);
+},{passive:true});
+
+/* ── MOBILE MENU ── */
+function toggleMenu(){
+  const m=document.getElementById('mobileMenu');
+  m.classList.toggle('open');
+  document.getElementById('burger').textContent=m.classList.contains('open')?'✕':'☰';
+}
+
+/* ── PAGE ROUTING ── */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
+  const map={home:'page-home',produtos:'page-produtos'};
+  const page=document.getElementById(map[id]);
+  if(page){page.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+  const nl=document.getElementById('nl-'+id);
+  if(nl)nl.classList.add('active');
+  if(id==='produtos'&&!window._prodCanvasInit){window._prodCanvasInit=true;setTimeout(initProdCanvas,80);}
+}
+
+/* ── PRODUCT FILTER ── */
+function filterProd(cat,btn){
+  document.querySelectorAll('.pf-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const rows=document.querySelectorAll('.pf-row[data-cat],.pg-card[data-cat]');
+  rows.forEach(r=>{
+    if(cat==='todos'||r.dataset.cat===cat){r.style.display='';}
+    else{r.style.display='none';}
+  });
+}
+
+/* ── COUNTER ANIMATION ── */
+function animateCounters(){
+  document.querySelectorAll('.stat-num[data-target]').forEach(el=>{
+    const tgt=parseInt(el.dataset.target);
+    const hasPlusSuffix=el.textContent.includes('+');
+    let v=0;const step=tgt/50;
+    const iv=setInterval(()=>{
+      v=Math.min(v+step,tgt);
+      el.textContent=Math.round(v)+(hasPlusSuffix?'+':'');
+      if(v>=tgt)clearInterval(iv);
+    },24);
+  });
+}
+
+/* Intersection observer para counters */
+const statsObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){animateCounters();statsObs.disconnect();}});
+},{threshold:.3});
+const strip=document.querySelector('.stats-strip');
+if(strip)statsObs.observe(strip);
+
+/* ── HERO CANVAS ── */
+(function(){
+  const canvas=document.getElementById('hero-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let W,H,pts=[];
+  function resize(){
+    W=canvas.width=window.innerWidth;
+    H=canvas.height=canvas.parentElement.offsetHeight||window.innerHeight;
+    pts=Array.from({length:Math.min(100,Math.floor(W*H/10000))},()=>({
+      x:Math.random()*W,y:Math.random()*H,
+      vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,
+      r:.4+Math.random()*1.4,o:.1+Math.random()*.35
+    }));
+  }
+  resize();
+  window.addEventListener('resize',resize,{passive:true});
+  let t=0;
+  (function draw(){
+    requestAnimationFrame(draw);t+=.009;
+    ctx.fillStyle='rgba(7,7,7,.97)';ctx.fillRect(0,0,W,H);
+    const rg=ctx.createRadialGradient(W*.5,H*.42,0,W*.5,H*.42,Math.min(W,H)*.5);
+    rg.addColorStop(0,'rgba(27,95,181,.09)');rg.addColorStop(1,'transparent');
+    ctx.fillStyle=rg;ctx.fillRect(0,0,W,H);
+    const gridSize=clamp(40,W/16,65);
+    ctx.strokeStyle='rgba(77,143,224,.03)';ctx.lineWidth=.5;
+    for(let x=0;x<W;x+=gridSize)for(let y=0;y<H;y+=gridSize){ctx.strokeRect(x,y,gridSize,gridSize);}
+    pts.forEach(p=>{
+      p.x=(p.x+p.vx+W)%W;p.y=(p.y+p.vy+H)%H;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(77,143,224,${p.o})`;ctx.fill();
+    });
+    const maxDist=Math.min(W*.15,110);
+    ctx.lineWidth=.4;
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=pts[j].x-pts[i].x,dy=pts[j].y-pts[i].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<maxDist){
+        ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);
+        ctx.strokeStyle=`rgba(77,143,224,${(1-d/maxDist)*.055})`;ctx.stroke();
+      }
+    }
+  })();
+})();
+
+/* ── PRODUTOS PAGE CANVAS ── */
+function initProdCanvas(){
+  const canvas=document.getElementById('prod-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){
+    W=canvas.width=canvas.parentElement.offsetWidth||window.innerWidth;
+    H=canvas.height=canvas.parentElement.offsetHeight||500;
+  }
+  resize();
+  window.addEventListener('resize',resize,{passive:true});
+  let t=0;
+  (function draw(){
+    requestAnimationFrame(draw);t+=.012;
+    ctx.fillStyle='rgba(7,7,7,.98)';ctx.fillRect(0,0,W,H);
+    const rg=ctx.createRadialGradient(W*.72,H*.5,0,W*.72,H*.5,Math.min(W*.45,320));
+    rg.addColorStop(0,'rgba(27,95,181,.14)');rg.addColorStop(1,'transparent');
+    ctx.fillStyle=rg;ctx.fillRect(0,0,W,H);
+    for(let i=0;i<30;i++){
+      const a=t*.45+i*(Math.PI*2/30),r=clamp(55,W*.1,90)+Math.sin(t+i*.6)*14;
+      const x=W*.7+Math.cos(a)*r,y=H*.48+Math.sin(a)*(r*.42);
+      ctx.beginPath();ctx.arc(x,y,1.4,0,Math.PI*2);
+      ctx.fillStyle=`rgba(77,143,224,${.07+Math.sin(t+i)*.04})`;ctx.fill();
+    }
+  })();
+}
+
+function clamp(min,val,max){return Math.max(min,Math.min(max,val));}
+
+/* Init counters on load se visíveis */
+setTimeout(()=>{
+  const st=document.querySelector('.stats-strip');
+  if(st&&st.getBoundingClientRect().top<window.innerHeight)animateCounters();
+},500);
+</script>
+</body>
+</html>
